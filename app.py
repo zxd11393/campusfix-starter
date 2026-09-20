@@ -14,7 +14,7 @@ DATABASE = Path(os.environ.get("DATABASE_PATH", INSTANCE_DIR / "campusfix.db"))
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-only-secret")
 
-# 基本日志配置：输出到 stdout，格式含时间与级别
+# 基本日志配置：输出到 stdout，格式含时间与级�?
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
@@ -23,7 +23,7 @@ logger = logging.getLogger("campusfix")
 
 
 def get_db():
-    """获取当前请求的数据库连接（Flask g 对象缓存）"""
+    """获取当前请求的数据库连接（Flask g 对象缓存�?""
     if "db" not in g:
         g.db = sqlite3.connect(DATABASE)
         g.db.row_factory = sqlite3.Row
@@ -39,7 +39,7 @@ def close_db(exc):
 
 @app.route("/health")
 def health():
-    """健康检查接口：Docker/CI/部署验证用"""
+    """健康检查接口：Docker/CI/部署验证�?""
     return {"status": "ok"}
 
 
@@ -72,7 +72,7 @@ def create_ticket():
         db = get_db()
         db.execute(
             "INSERT INTO tickets (title, room, description) VALUES (?, ?, ?)",
-            (title, description, room),
+            ((title, room, description)),
         )
         db.commit()
         logger.info("created ticket: %s (%s)", title, room)
@@ -81,5 +81,5 @@ def create_ticket():
 
 
 if __name__ == "__main__":
-    # 仅开发用途；生产部署使用 gunicorn（第11次课）
+    # 仅开发用途；生产部署使用 gunicorn（第11次课�?
     app.run(host="127.0.0.1", port=5000, debug=True)
